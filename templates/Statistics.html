@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script src="../static/assets/js/echarts.min.js"></script>
+    <script src="../static/assets/js/vue.js"></script>
+    <script src="../static/assets/js/axios.min.js"></script>
+    <script src="../static/assets/js/mqtt.min.js"></script>
+    <script src="../static/assets/js/element-index.js"></script> -->
+    <script src="../templates/js/utils.js"></script>
+
+    <link href="../static/assets/css/my.css" rel="stylesheet">
+    <link href="../static/assets/css/element-index.css" rel="stylesheet">
+
+  <title>农业管理系统</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="../static/assets/img/favicon.png" rel="icon">
+  <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="../static/assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="../static/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="container">
+
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="../index.html"><span>农业管理系统
+
+          <div class="title-status" id="status">
+            <el-switch v-model="value1" @change="changeStatus" disabled active-text="在线" inactive-text="离线" active-color="#3164c2"></el-switch>
+          </div>
+
+        </span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="temp.html"><img src="static/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+            <li><a href="../index.html">首页<i class="la la-angle-down"></i></a></li>
+            <li><a href="../templates/Control.html">控制模块</a></li>
+            <li><a href="../templates/Query.html">查询模块</a></li>
+            <li class="active"><a href="../templates/Statistics.html">统计模块</a></li>
+			<li><a href="../templates/Add.html">增加模块</a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header><!-- End Header -->
+
+      <!-- ======= Our Team Section ======= -->
+    <section id="team" class="team">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>统计模块</h2>
+          <p class="section-p">收集两个节点湿温度的数据进行图形统计</p>
+        </div>
+		<div id="main">
+			<div id="main2" style="width: 100%;height:500px;"></div>
+			<div id="main3" style="width: 100%;height:500px;"></div>
+		</div>
+        
+
+      </div>
+    </section>
+
+
+    <!-- <div id="main2" style="width: 1400px;height:500px;"></div> -->
+    <!-- <div id="main2" style="height:150px;"></div> -->
+        
+
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="../static/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../static/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="../static/assets/vendor/php-email-form/validate.js"></script>
+  <script src="../static/assets/vendor/jquery-sticky/jquery.sticky.js"></script>
+  <script src="../static/assets/vendor/venobox/venobox.min.js"></script>
+  <script src="../static/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="../static/assets/vendor/counterup/counterup.min.js"></script>
+  <script src="../static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../static/assets/vendor/aos/aos.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="../static/assets/js/main.js"></script>
+  <script type="text/javascript">
+
+  var time_data = "";
+  var humid_data = "";
+  var temp_data = "";
+  var light_data = "";
+
+  var closeFlag = 0;
+	var reconnectFlag = 0;    
+
+
+  var options = {
+				clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8)
+			};
+	var client = mqtt.connect(utils.mqttServerUrl, options); // you add a ws:// url here
+	
+  client.on('connect', function () {
+		console.log("_connect success!");
+		client.subscribe(utils.topicSub, { qos : 0 }, function (err, granted) {
+			if (!err) {
+				console.log("_subscribe success!" + new Date());
+
+				if(reconnectFlag == 0){
+					alert("连接成功");
+					reconnectFlag = 1;
+					changeStatus(1);
+					closeFlag = 0;
+				}
+			}else{
+				console.log("error");
+				// location.reload();
+			}
+		});
+	});
+
+  client.on('close', function () {
+		if(closeFlag == 0){
+			alert("连接断开");
+			closeFlag = 1;
+			changeStatus(0);
+			reconnectFlag = 0;
+		}
+	})
+
+  var app2 = new Vue({
+
+    el:"#status",
+    data:{
+      value1:" "
+    },
+    mounted(){
+      window.changeStatus = this.changeStatus;
+      // this.changeStatus();
+    },
+    methods:{
+      changeStatus:function(arg){
+        if(arg == 1){
+          this.value1 = true;
+        }
+        if(arg == 0){
+          this.value1 = false;
+        }
+      }
+    }
+
+  });
+  
+  var app3 = new Vue({
+  el:'#main',
+  data:{
+      time_data : [],
+      humid_data1 : [],
+      temp_data1 : [],
+		  humid_data2 : [],
+		  temp_data2 : [],
+  },
+  created: function () {
+    var that = this;
+    axios.get(utils.serverUrl).then(res =>{
+      if(res.data.code != 10000){
+        console.log("error have ")
+      }
+      
+      console.log(res.data)
+      var vo = res.data;
+      var j = vo.data.length;
+      
+      for(var i = 0; i < vo.data.length; i++){
+        j--;
+        that.time_data[j] = vo.data[i].time;
+        that.temp_data1[j] = vo.data[i].temp1;
+        that.humid_data1[j] = vo.data[i].humidity1;
+        that.temp_data2[j] = vo.data[i].temp2;
+        that.humid_data2[j] = vo.data[i].humidity2;
+      }
+        
+        var myCharts1 = echarts.init(document.getElementById("main2"));
+        var myCharts2 = echarts.init(document.getElementById("main3"));
+        option1 = {
+          title: {
+            text: '节点1',
+            subtext: 'all'
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          legend: {
+            // data: ['Rainfall', 'Evaporation']
+            data: ['湿度1', '温度1']
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              dataView: { show: true, readOnly: false },
+              magicType: { show: true, type: ['line', 'bar'] },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
+          },
+          calculable: true,
+          xAxis: [
+            {
+              type: 'category',
+              // prettier-ignore
+              data: that.time_data
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value'
+            }
+          ],
+          series: [
+            {
+              name: '湿度1',
+              type: 'line',
+              data: that.humid_data1,
+              // markPoint: {
+              //   data: [
+              //     { type: 'max', name: 'Max' },
+              //     { type: 'min', name: 'Min' }
+              //   ]
+              // },
+              // markLine: {
+              //   data: [{ type: 'average', name: 'Avg' }]
+              // }
+            },
+            {
+              name: '温度1',
+              type: 'line',
+              data: that.temp_data1,
+              // markPoint: {
+              //   data: [
+              //     { type: 'max', name: 'Max' },
+              //     { type: 'min', name: 'Min' }
+              //   ]
+              // },
+              // markLine: {
+              //   data: [{ type: 'average', name: 'Avg' }]
+              // }
+            }
+    // ,
+    //             {
+    //               name: '光照强度',
+    //               type: 'line',
+    //               data: that.light_data,
+              // markPoint: {
+              //   data: [
+              //     { name: 'Max', value: 182.2, xAxis: 7, yAxis: 183 },
+              //     { name: 'Min', value: 2.3, xAxis: 11, yAxis: 3 }
+              //   ]
+              // },
+              // markLine: {
+              //   data: [{ type: 'average', name: 'Avg' }]
+              // }
+            // }
+          ]
+        };
+        option2 = {
+          title: {
+            text: '节点2',
+            subtext: 'all'
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          legend: {
+            data: ['湿度2', '温度2']
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              dataView: { show: true, readOnly: false },
+              magicType: { show: true, type: ['line', 'bar'] },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
+          },
+          calculable: true,
+          xAxis: [
+            {
+              type: 'category',
+              data: that.time_data
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value'
+            }
+          ],
+          series: [
+            {
+              name: '湿度2',
+              type: 'line',
+              data: that.humid_data2,
+              },
+            {
+              name: '温度2',
+              type: 'line',
+              data: that.temp_data2,
+            }			  
+          ]
+        };
+
+        myCharts1.setOption(option1);
+		    myCharts2.setOption(option2);
+
+        window.onresize = function(){
+        myCharts1.resize();
+		  // myCharts2.resize();
+        }
+
+      }).catch((error) => {
+        console.log(error);
+      })
+    }
+  })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+.control-button { /* 按钮美化 */
+	width: 80px; /* 宽度 */
+	height: 48px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #5c768d; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+}
+.control-button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #3c5172;
+}
+
+.control-button2 { /* 按钮美化 */
+	width: 60px; /* 宽度 */
+	height: 40px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #5c768d; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+}
+.control-button2:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #3c5172;
+}
+
+.control-input{
+    width: 200px;
+    height: 45px;
+    border: 1px solid #ccc;
+    padding: 5px 0px;
+    border-radius: 3px;
+    padding-left:5px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+}
+.control-input:focus{
+        border-color: #66afe9;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+
+.control-input2{
+    width: 200px;
+    height: 40px;
+    border: 1px solid #ccc;
+    padding: 5px 0px;
+    border-radius: 3px;
+    padding-left:5px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+}
+.control-input2:focus{
+        border-color: #66afe9;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+
+.title-status{
+    color: #3164c2;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* ../../../demo/img/bc.jpg */
+
+body {
+    background-image: url("../img/bc.jpg") ;
+    filter: opacity(80%);
+    -webkit-filter: opacity(95%);
+    background-size:cover;  
+    background-attachment:fixed;         
+    background-color:#CCCCCC;   
+
+}
+
+
+/* .bodystyle{
+    filter:alpha(opacity=50);  
+    -moz-opacity:0.5;  
+    -khtml-opacity: 0.5;  
+    opacity: 0.5;
+    width:100%;
+    position:absolute;
+    background:url("./demo/img/bc.jpg") ; 
+    background-attachment:fixed;
+} */
+
+.section-p{
+    font-size: 20px;
+    font-weight: 400;
+}

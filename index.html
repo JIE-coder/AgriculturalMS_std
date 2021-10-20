@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <script src="./static/assets/js/vue.js"></script>
+  <script src="./static/assets/js/axios.min.js"></script>
+  <script src="./static/assets/js/mqtt.min.js"></script>
+  <script src="./static/assets/js/element-index.js"></script>
+  <script src="./templates/js/utils.js"></script>
+
+
+  <link href="./static/assets/css/my.css" rel="stylesheet">
+  <link href="./static/assets/css/element-index.css" rel="stylesheet">
+
+  <title>农业管理系统</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+  
+
+  <!-- Favicons -->
+  <link href="./static/assets/img/favicon.png" rel="icon">
+  <link href="./static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="./static/assets/css/font.css" rel="stylesheet">
+
+
+  <!-- Vendor CSS Files -->
+  <link href="./static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./static/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="./static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="./static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="./static/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="./static/assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="./static/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="container">
+
+      <div class="logo float-left">
+        <h1 class="text-light"><a><span>
+          农业管理系统
+          <div class="title-status" id="status">
+            <el-switch v-model="value1" @change="changeStatus" disabled active-text="在线" inactive-text="离线" active-color="#3164c2"></el-switch>
+          </div>
+
+        </span>
+          
+        <!-- </br></br> -->
+          
+          </a>
+        </h1>
+
+      </div>
+
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="index.html">首页<i class="la la-angle-down"></i></a></li>
+          <li><a href="./templates/Control.html">控制模块</a></li>
+          <li><a href="./templates/Query.html">查询模块</a></li>
+          <li><a href="./templates/Statistics.html">统计模块</a></li>
+          <li><a href="./templates/Add.html">增加模块</a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header><!-- End Header -->
+
+      <!-- ======= Our Team Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title" >
+          <h2>实时显示</h2>
+          <p class="section-p">实时显示湿度传感器、温度传感器和光照强度传感器数据</p>
+        </div>
+
+            <!-- ======= Counts Section ======= -->
+    <section class="counts section-bg">
+      <div class="container">
+
+        <div id="index_data" class="row">
+
+          
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up" >
+              <div class="count-box">
+              <img src="./static/assets/img/icon_temp.png" style="height: 70px;width: 70px;"></img>
+              <span id="index_temp1" data-toggle="counter-up">{{ index_temp }}</span>
+              <p>温度A(单位：℃)</p>
+            </div>
+            </a>
+          </div>
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up" >
+            <div class="count-box">
+            <img src="./static/assets/img/icon_temp_2.png" style="height: 70px;width: 70px;"></img>
+            <span id="index_temp2" data-toggle="counter-up">{{ index_temp }}</span>
+            <p>温度B(单位：℃)</p>
+          </div>
+          </a>
+        </div>
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up" >
+            <div class="count-box">
+            <img src="./static/assets/img/icon_humid.png" style="height: 70px;width: 70px;"></img>
+            <span id="index_humid1" data-toggle="counter-up">{{ index_temp }}</span>
+            <p>湿度A(单位：%RH)</p>
+          </div>
+          </a>
+        </div>
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up" >
+            <div class="count-box">
+            <img src="./static/assets/img/icon_humid_2.png" style="height: 70px;width: 70px;"></img>
+            <span id="index_humid2" data-toggle="counter-up">{{ index_temp }}</span>
+            <p>湿度B(单位：%RH)</p>
+          </div>
+          </a>
+        </div>
+        
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up" >
+            <div class="count-box">
+            <img src="./static/assets/img/icon_light.png" style="height: 70px;width: 70px;"></img>
+            <span id="index_light1" data-toggle="counter-up">{{ index_temp }}</span>
+            <p>光照强度A(单位：lx)</p>
+          </div>
+          </a>
+        </div>
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up" >
+            <div class="count-box">
+            <img src="./static/assets/img/icon_light_2.png" style="height: 70px;width: 70px;"></img>
+            <span id="index_light2" data-toggle="counter-up">{{ index_temp }}</span>
+            <p>光照强度B(单位：lx)</p>
+          </div>
+          </a>
+        </div>
+
+          <!-- <div class="col-lg-4 col-md-6 text-center" data-aos="fade-up" data-aos-delay="100"> -->
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
+              <div class="count-box">
+              <!-- <i class="icofont-live-support" style="color: #46d1ff;"></i> -->
+              <img src="./static/assets/img/fs.png" style="height: 70px;width: 70px;display: inline;"></img>
+              <!-- <span id="index_yanwu"  style="display: inline;">1</span> -->
+              <!-- <span id="index_yanwu2" style="display: inline;">2</span>
+              <span id="index_yanwu3" style="display: inline;">3</span> -->
+              <span id="index_fs1" data-toggle="counter-up">{{  }}</span>
+              <p>风扇A状态(单位：)</p>
+            </div>
+            </a>
+          </div>
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
+              <div class="count-box">
+              <!-- <i class="icofont-live-support" style="color: #46d1ff;"></i> -->
+              <img src="./static/assets/img/fs_2.png" style="height: 70px;width: 70px;display: inline;"></img>
+              <!-- <span id="index_yanwu"  style="display: inline;">1</span> -->
+              <!-- <span id="index_yanwu2" style="display: inline;">2</span>
+              <span id="index_yanwu3" style="display: inline;">3</span> -->
+              <span id="index_fs2" data-toggle="counter-up">{{  }}</span>
+              <p>风扇A状态(单位：)</p>
+            </div>
+            </a>
+          </div>
+
+
+          <!-- <div class="col-lg-4 col-md-6 text-center" data-aos="fade-up" data-aos-delay="100"> -->
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
+              <div class="count-box">
+              <!-- <i class="icofont-live-support" style="color: #46d1ff;"></i> -->
+              <img src="./static/assets/img/icon_yanwu.png" style="height: 70px;width: 70px;display: inline;"></img>
+              <!-- <span id="index_yanwu"  style="display: inline;">1</span> -->
+              <!-- <span id="index_yanwu2" style="display: inline;">2</span>
+              <span id="index_yanwu3" style="display: inline;">3</span> -->
+              <span id="index_smog1" data-toggle="counter-up">{{  }}</span>
+              <p>烟雾A状态(单位：)</p>
+            </div>
+            </a>
+          </div>
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
+              <div class="count-box">
+              <!-- <i class="icofont-live-support" style="color: #46d1ff;"></i> -->
+              <img src="./static/assets/img/icon_yanwu2.png" style="height: 70px;width: 70px;display: inline;"></img>
+              <!-- <span id="index_yanwu"  style="display: inline;">1</span> -->
+              <!-- <span id="index_yanwu2" style="display: inline;">2</span>
+              <span id="index_yanwu3" style="display: inline;">3</span> -->
+              <span id="index_smog2" data-toggle="counter-up">{{  }}</span>
+              <p>烟雾B状态(单位：)</p>
+            </div>
+            </a>
+          </div>
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
+            <!-- <div class="col-xl-6 col-md-3 text-center" data-aos="fade-up"> -->
+              <!-- <div class="col-xl-3 col-md-12 mb-4"></div> -->
+              <div class="count-box" >
+                <div align="center"><img  src="./static/assets/img/dp2.png" style="height: 70px;width: 70px;"></img>
+                <span id="index_led" data-toggle="counter-up">{{ index_humid }}</span>
+                <p>灯泡(单位：)</p>
+              </div>
+              </div>
+                </a>
+            </div>
+
+          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
+            <!-- <div class="col-xl-6 col-md-3 text-center" data-aos="fade-up"> -->
+              <!-- <div class="col-xl-3 col-md-12 mb-4"></div> -->
+              <div class="count-box" >
+                <div align="center"><img  src="./static/assets/img/icon_hw.png" style="height: 70px;width: 70px;"></img>
+                <span id="index_number" data-toggle="counter-up">{{ index_humid }}</span>
+                <p>人员状态(单位：)</p>
+              </div>
+              </div>
+                </a>
+            </div>
+
+
+
+        </div>
+
+
+      </div>
+    </section><!-- End Counts Section -->
+
+      </div>
+    </section><!-- End Our Team Section -->
+
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="./static/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="./static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./static/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="./static/assets/vendor/php-email-form/validate.js"></script>
+  <script src="./static/assets/vendor/jquery-sticky/jquery.sticky.js"></script>
+  <script src="./static/assets/vendor/venobox/venobox.min.js"></script>
+  <script src="./static/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="./static/assets/vendor/counterup/counterup.min.js"></script>
+  <script src="./static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="./static/assets/vendor/aos/aos.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="./static/assets/js/main.js"></script>
+
+
+
+  <script type="text/javascript">
+
+
+  var closeFlag = 0;
+	var reconnectFlag = 0;
+  var tableList = [];
+  var index = false;
+  
+
+  var options = {
+				//mqtt客户端的id，这里面应该还可以加上其他参数，具体看官方文档
+				clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8)
+			};
+	// var client = mqtt.connect("ws://1.117.36.123:8083/mqtt", options); // you add a ws:// url here
+	var client = mqtt.connect(utils.mqttServerUrl, options); // you add a ws:// url here
+	
+  client.on('connect', function () {
+		console.log("_connect success!");
+		// client.subscribe('getipd', function (err) {
+		client.subscribe(utils.topicSub, { qos : 0 }, function (err, granted) {
+			if (!err) {
+				console.log("_subscribe success!" + new Date());
+				//发布主题getipd,消息内容为Hello mqtt
+
+				if(reconnectFlag == 0){
+					alert("连接成功");
+
+          setTimeout(() => {
+            var date = new Date();
+            var time = dateFormat("HHMMSS", date);
+            // var time2 = time.replace(/:/g,"");
+            // var time3 = time2.replace(/ /g,"");
+            var timeStr = '{"time":'+time+'}';
+            
+            console.log("时间是:"+timeStr);
+            
+            client.publish(utils.topicOnline,timeStr); 
+          }, 3000);
+
+					reconnectFlag = 1;
+					changeStatus(1);
+					closeFlag = 0;
+				}
+			}else{
+				//打印错误
+				console.log("error");
+				// location.reload();
+			}
+		});
+	});
+
+  client.on('close', function () {
+		if(closeFlag == 0){
+			alert("连接断开");
+			closeFlag = 1;
+			changeStatus(0);
+			reconnectFlag = 0;
+		}
+	})
+
+//   {
+//   "Temp1": 10,
+//   "Humidity1":70,
+//   "Temp2":20,
+//   "Humidity2":80,
+//   "DcmotorA":1,
+//   "DcmotorB":0,
+//   "People":2
+// }
+
+  // topic(str) payload(obj) packet(obj)
+  client.on('message', function (topic, payload, packet) {
+
+    jsonStr = payload.toString("utf8");
+    json_obj = JSON.parse(jsonStr);
+
+    console.log(json_obj);
+
+    var temp1 = json_obj.Temp1;
+    var temp2 = json_obj.Temp2;
+    var humid1 = json_obj.humidity1;
+    var humid2 = json_obj.Humidity2;
+    var light1 = json_obj.Light1;
+    var light2 = json_obj.Light2;
+
+    var motor1 = json_obj.Motor1;
+    var motor2 = json_obj.Motor2;
+    var smog1 = json_obj.Smog1;
+    var smog2 = json_obj.Smog2;
+
+    var led = json_obj.LED;
+    var number = json_obj.People;
+
+      
+    document.getElementById("index_temp1").innerText = temp1;
+    document.getElementById("index_temp2").innerText = temp2;
+    document.getElementById("index_humid1").innerText = humid1;
+    document.getElementById("index_humid2").innerText = humid2;
+    document.getElementById("index_light1").innerText = light1;
+    document.getElementById("index_light2").innerText = light2;
+
+    document.getElementById("index_smog1").innerText = smog1;
+    document.getElementById("index_smog2").innerText = smog2;
+    document.getElementById("index_led").innerText = led;
+    document.getElementById("index_number").innerText = number;
+
+    if(motor1 == 1){
+      document.getElementById("index_motor1").innerText = "转动";
+    }else if(motor1 == 0){
+      document.getElementById("index_motor1").innerText = "停转";
+    }
+
+    if(motor2 == 1){
+      document.getElementById("index_motor2").innerText = "转动";
+    }else if(motor2 == 0){
+      document.getElementById("index_motor2").innerText = "停转";
+    }
+
+
+  })
+
+  // setInterval(update2(), 3000);
+
+  var app2 = new Vue({
+
+    el:"#status",
+    data:{
+      value1:" "
+    },
+    mounted(){
+      window.changeStatus = this.changeStatus;
+      // this.changeStatus();
+    },
+    methods:{
+      
+      changeStatus:function(arg){
+        if(arg == 1){
+          this.value1 = true;
+        }
+        if(arg == 0){
+          this.value1 = false;
+        }
+      }
+    }
+
+  });
+
+
+
+  var app = new Vue({
+      el:'#index_data',
+      data:{
+          index_humid: '',
+          index_temp:'',
+          index_light:'',
+          index_yanwu:'',
+          index_yanwu2:'',
+          index_number:''
+          // datas:[
+            // {
+            //   date: '2016-05-03',
+            //   name: 'Tom',
+            //   address: 'No. 189, Grove St, Los Angeles',
+            // },
+            // {
+            //   date: '2016-05-02',
+            //   name: 'Tom',
+            //   address: 'No. 189, Grove St, Los Angeles',
+            // },
+            // {
+            //   date: '2016-05-04',
+            //   name: 'Tom',
+            //   address: 'No. 189, Grove St, Los Angeles',
+            // },
+            // {
+            //   date: '2016-05-01',
+            //   name: 'Tom',
+            //   address: 'No. 189, Grove St, Los Angeles',
+            // },
+          // ]
+      },
+      mounted(){
+        // this.update();
+        // setInterval(this.update,2000);
+        
+      },
+      methods: {
+        update:function() {
+          var that = this;
+          axios.get('http://localhost:8080/data/getAll').then(res =>{
+          if(res.data.code == 10000){
+            console.log(res.data.data);
+            that.index_humid = res.data.data[0].humidity;
+            that.index_temp = res.data.data[0].temp;
+            that.index_light = res.data.data[0].light;
+          }else{
+            console.log("error have ")
+          }
+          // setTimeout(() => {
+          //   that.update()
+          // },300)
+        }).catch((error) => {
+          console.log(error);
+      })
+        }
+      }
+  })
+
+</script>
+
+</body>
+
+</html>

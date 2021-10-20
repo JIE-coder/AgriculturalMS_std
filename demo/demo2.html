@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+</head>
+<body>
+	<img id="img1" style="display: inline-block;height: 100px;width: 100px;" src="./img/fs.png">
+  <!-- 这里图片的路径src， 自己找一张图，写上自己的路径就好了 -->
+  <button id="btn">停止或启动</button>
+  <script>
+    var timer = null;//全局命名定时器的名字
+    var img;//全局命名img
+    var r = 0;//全局命名角度
+    // window.onload = function () {//页面一启动就加载
+
+      img = document.getElementById('img1');
+
+    //   timer = setInterval(() => {
+    //     img.style.transform = 'rotate(' + (r += 100) + 'deg)';//用css的转换属性 rotate(deg)
+    //     img.style.transition = 'all 1s linear';//用css的过度属性，注意 时间需要和定时器启动的时间一致才能不卡帧,不要linear会一顿一顿的
+    //     console.log('定时器启动');
+    //   }, 1000);
+
+
+
+    // };
+
+    var flag = true;//全局声明状态切换的初始值
+    btn.onclick = function () {
+      if (flag) {
+        clearInterval(timer);
+        console.log('定时器已停止');
+        flag = false;
+      } else if (flag == false) {
+        timer = setInterval(() => {
+          img.style.transform = 'rotate(' + (r += 400) + 'deg)';
+          img.style.transition = 'all 1s linear';
+          console.log('定时器启动');
+        }, 1000);
+        flag = true;
+      }
+
+    }
+  </script>
+</body>
+</html>
