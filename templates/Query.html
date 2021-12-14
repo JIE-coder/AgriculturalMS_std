@@ -6,7 +6,7 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <script src="../static/assets/js/vue.js"></script>
   <script src="../static/assets/js/axios.min.js"></script>
-  <script src="../static/assets/js/element-index.js"></script> -->
+  <script src="../static/assets/js/element-index.js"></script>
   <script src="../static/assets/js/mqtt.min.js"></script>
   
   <script src="./js/utils.js" type="text/javascript" charset="utf-8"></script>
@@ -60,7 +60,7 @@
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
             <li><a href="../index.html">首页<i class="la la-angle-down"></i></a></li>
-            <li><a href="../templates/Control.html">控制模块</a></li>
+            <li><a href="../templates/Control_2.html">控制模块</a></li>
             <li class="active"><a href="../templates/Query.html">查询模块</a></li>
             <li><a href="../templates/Statistics.html">统计模块</a></li>
             <li><a href="../templates/Add.html">增加模块</a></li>
@@ -73,7 +73,7 @@
       <!-- ======= Contact Us Section ======= -->
       
   <section id="contact" class="contact">
-    <div class="container">
+    <div class="container" id="control_div">
 
       <div class="section-title">
         <h2>查询模块</h2>
@@ -159,49 +159,54 @@
               请输入借阅人名字&nbsp;&nbsp;
               <input id="user_data1" type="text" placeholder="借阅名"/>
               </br>
+              </br>
               请输入借阅起始时间&nbsp;&nbsp;
               <!-- <input id="time_data1" type="datetime-local" value="2021-09-08T13:25"/> -->
               <input id="time_data1" type="datetime-local" value=""/>
-              <el-button type="primary" icon="el-icon-search" @click="getData1">查询</el-button>
-              &nbsp;&nbsp;
-              <el-button type="primary" icon="el-icon-search" @click="clearData1">清空输入</el-button>
-  
+              <button type="primary" onclick="getData1" class="control-button2">查询</button>
+              <!-- icon="el-icon-search" -->
+              <!-- &nbsp;&nbsp; -->
+              <!-- <button type="primary" onclick="clearData1" class="control-button2" style="width: auto;">清空输入</button> -->
+              <!-- icon="el-icon-search" -->
+
               </div>
             </br>
               <div id="control_2" style="color: #5c768d;font-weight: 600;font-size: 20px;">
   
-              <el-table
-              :data="tableData1"
-              stripe
-              style="width: 100%">
-              <el-table-column
-                prop="bookid"
-                label="书籍编号"
-                width="180">
-              </el-table-column>
-              <el-table-column
-                prop="bookname"
-                label="书籍名"
-                width="180">
-              </el-table-column>
-              <el-table-column
-              prop="bookaddress"
-              label="书籍存放位置"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="bookborrower"
-              label="借阅人"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="time"
-              label="借阅时间"
-              width="320">
-            </el-table-column>
-            </el-table>
-                  </div> -->
-              </div>
+                <el-table
+                  :data="tableData1"
+                  stripe
+                  style="width: auto"
+                >
+                    <el-table-column
+                      prop="bookid"
+                      label="书籍编号"
+                      width="180">
+                    </el-table-column>
+                    <el-table-column
+                      prop="bookname"
+                      label="书籍名"
+                      width="150">
+                    </el-table-column>
+                    <el-table-column
+                    prop="bookaddress"
+                    label="书籍存放位置"
+                    width="150">
+                  </el-table-column>
+                  <el-table-column
+                    prop="bookborrower"
+                    label="借阅人"
+                    width="150">
+                  </el-table-column>
+                  <el-table-column
+                    prop="time"
+                    label="借阅时间"
+                    width="320">
+                  </el-table-column>
+              </el-table>
+              
+            </div>
+          </div>
   
   
   
@@ -241,9 +246,8 @@
 	var value = "";
 
   var closeFlag = 0;
-	var reconnectFlag = 0;    
-
-
+	var reconnectFlag = 0;
+  
   var options = {
 				//mqtt客户端的id，这里面应该还可以加上其他参数，具体看官方文档
 				clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8)
@@ -303,7 +307,7 @@
   });
     
   var vm = new Vue({
-    el: '#control',
+    el: '#control_div',
     data: {
       selected: "",
       // time: "",
@@ -313,7 +317,8 @@
     },
     mounted(){
       window.queryBtn1 = this.queryBtn1,
-      window.queryBtn2 = this.queryBtn2
+      window.queryBtn2 = this.queryBtn2,
+      window.getData1 = this.getData1
     },
     methods:{
       queryBtn1: function(){
@@ -342,55 +347,54 @@
         })
       },
     
-    queryBtn2: function(){
-      that = this;
-      var timeDataStart = document.getElementById("time_start").value;
-      // console.log(timeData1);
-      timedata1 = timeDataStart.substring(0,10) + " " + timeDataStart.substring(11,16);
-      console.log(timedata1 + " :timedata1");
+      queryBtn2: function(){
+        that = this;
+        var timeDataStart = document.getElementById("time_start").value;
+        // console.log(timeData1);
+        timedata1 = timeDataStart.substring(0,10) + " " + timeDataStart.substring(11,16);
+        console.log(timedata1 + " :timedata1");
+      
+        var timeDataEnd = document.getElementById("time_end").value;
+        // console.log(timeData1);
+        timedata2 = timeDataEnd.substring(0,10) + " " + timeDataEnd.substring(11,16);
+        console.log(timedata2 + ": timedata2");
+      
+      
+        var selectType = document.getElementById("selectType");
+        // console.log(timeData);
+        axios.get(utils.serverUrl + "getAllByTime2/" + timedata1 + "/" + timedata2).then((res)=>{
+      
+          var vo = res.data;
+          console.log(vo.data);
+          that.datas = vo.data;
+          if(selectType.value == "Temp"){
+            that.index = '1';
+          }else if(selectType.value == "Humidity") {
+            that.index = '2';
+          } else {
+            that.index = '3';
+          }
+      
+      
+        })
+      },
     
-      var timeDataEnd = document.getElementById("time_end").value;
-      // console.log(timeData1);
-      timedata2 = timeDataEnd.substring(0,10) + " " + timeDataEnd.substring(11,16);
-      console.log(timedata2 + ": timedata2");
-    
-    
-      var selectType = document.getElementById("selectType");
-      // console.log(timeData);
-      axios.get(utils.serverUrl + "getAllByTime2/" + timedata1 + "/" + timedata2).then((res)=>{
-    
-        var vo = res.data;
-        console.log(vo.data);
-        that.datas = vo.data;
-        if(selectType.value == "Temp"){
-          that.index = '1';
-        }else if(selectType.value == "Humidity") {
-          that.index = '2';
-        } else {
-          that.index = '3';
-        }
-    
-    
-      })
-    }
-    },
+      getData1: function() {
+          var that = this;
 
-    getData1:function() {
-            var that = this;
+          var baseUrl = "http://localhost:8080/data/borrowerCon/";
 
-            var baseUrl = "http://localhost:8080/data/borrowerCon/";
+          var user_data1 = document.getElementById("user_data1").value;
+          var time_data1 = document.getElementById("time_data1").value;
 
-            var user_data1 = document.getElementById("user_data1").value;
-            var time_data1 = document.getElementById("time_data1").value;
+          time_data1 = time_data1.substring(0,10) + " " + time_data1.substring(11,16);
+          console.log(typeof(time_data1));
 
-            time_data1 = time_data1.substring(0,10) + " " + time_data1.substring(11,16);
-            console.log(typeof(time_data1));
+          if(time_data1.substring(0,2) == "20"){
+            baseUrl = baseUrl + time_data1 + "/";
+          }
 
-            if(time_data1.substring(0,2) == "20"){
-              baseUrl = baseUrl + time_data1 + "/";
-            }
-
-            axios.get(baseUrl + '?borrower='+ user_data1 ).then(res =>{
+          axios.get(baseUrl + '?borrower='+ user_data1 ).then(res =>{
             if(res.data.code == 10000){
               console.log(res.data);
               that.tableData1 = res.data.data;
@@ -400,12 +404,15 @@
             // setTimeout(() => {
             //   that.update()
             // },1000)
-          }).catch((error) => {
-            console.log(error);
+        }).catch((error) => {
+          console.log(error);
         })
-          }
-          
-});
+      }
+      
+    }
+
+        
+  });
 
 </script>
 

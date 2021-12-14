@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <!-- <meta http-equiv="refresh" content="10"> -->
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <script src="./static/assets/js/vue.js"></script>
   <script src="./static/assets/js/axios.min.js"></script>
@@ -15,7 +16,7 @@
   <link href="./static/assets/css/element-index.css" rel="stylesheet">
 
   <title>农业管理系统</title>
-  <meta content="" name="descriptison">
+  <meta content="" name="description">
   <meta content="" name="keywords">
   
 
@@ -50,8 +51,9 @@
       <div class="logo float-left">
         <h1 class="text-light"><a><span>
           农业管理系统
-          <div class="title-status" id="status">
+          <div class="title-status" id="status" style="margin-top: 10px;">
             <el-switch v-model="value1" @change="changeStatus" disabled active-text="在线" inactive-text="离线" active-color="#3164c2"></el-switch>
+            <el-button type="primary" @click="changeTime" size="mini" plain>时间校准</el-button>
           </div>
 
         </span>
@@ -66,7 +68,7 @@
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
           <li class="active"><a href="index.html">首页<i class="la la-angle-down"></i></a></li>
-          <li><a href="./templates/Control.html">控制模块</a></li>
+          <li><a href="./templates/Control_2.html">控制模块</a></li>
           <li><a href="./templates/Query.html">查询模块</a></li>
           <li><a href="./templates/Statistics.html">统计模块</a></li>
           <li><a href="./templates/Add.html">增加模块</a></li>
@@ -129,7 +131,7 @@
           </a>
         </div>
         
-          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up" >
+          <!-- <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up" >
             <div class="count-box">
             <img src="./static/assets/img/icon_light.png" style="height: 70px;width: 70px;"></img>
             <span id="index_light1" data-toggle="counter-up">{{ index_temp }}</span>
@@ -145,17 +147,12 @@
             <p>光照强度B(单位：lx)</p>
           </div>
           </a>
-        </div>
+        </div> -->
 
-          <!-- <div class="col-lg-4 col-md-6 text-center" data-aos="fade-up" data-aos-delay="100"> -->
           <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
               <div class="count-box">
-              <!-- <i class="icofont-live-support" style="color: #46d1ff;"></i> -->
               <img src="./static/assets/img/fs.png" style="height: 70px;width: 70px;display: inline;"></img>
-              <!-- <span id="index_yanwu"  style="display: inline;">1</span> -->
-              <!-- <span id="index_yanwu2" style="display: inline;">2</span>
-              <span id="index_yanwu3" style="display: inline;">3</span> -->
-              <span id="index_fs1" data-toggle="counter-up">{{  }}</span>
+              <span id="index_motor1" data-toggle="counter-up">{{  }}</span>
               <p>风扇A状态(单位：)</p>
             </div>
             </a>
@@ -163,39 +160,26 @@
 
           <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
               <div class="count-box">
-              <!-- <i class="icofont-live-support" style="color: #46d1ff;"></i> -->
               <img src="./static/assets/img/fs_2.png" style="height: 70px;width: 70px;display: inline;"></img>
-              <!-- <span id="index_yanwu"  style="display: inline;">1</span> -->
-              <!-- <span id="index_yanwu2" style="display: inline;">2</span>
-              <span id="index_yanwu3" style="display: inline;">3</span> -->
-              <span id="index_fs2" data-toggle="counter-up">{{  }}</span>
-              <p>风扇A状态(单位：)</p>
+              <span id="index_motor2" data-toggle="counter-up">{{  }}</span>
+              <p>风扇B状态(单位：)</p>
             </div>
             </a>
           </div>
 
 
-          <!-- <div class="col-lg-4 col-md-6 text-center" data-aos="fade-up" data-aos-delay="100"> -->
           <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
               <div class="count-box">
-              <!-- <i class="icofont-live-support" style="color: #46d1ff;"></i> -->
               <img src="./static/assets/img/icon_yanwu.png" style="height: 70px;width: 70px;display: inline;"></img>
-              <!-- <span id="index_yanwu"  style="display: inline;">1</span> -->
-              <!-- <span id="index_yanwu2" style="display: inline;">2</span>
-              <span id="index_yanwu3" style="display: inline;">3</span> -->
               <span id="index_smog1" data-toggle="counter-up">{{  }}</span>
               <p>烟雾A状态(单位：)</p>
             </div>
             </a>
           </div>
 
-          <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
+          <!-- <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
               <div class="count-box">
-              <!-- <i class="icofont-live-support" style="color: #46d1ff;"></i> -->
               <img src="./static/assets/img/icon_yanwu2.png" style="height: 70px;width: 70px;display: inline;"></img>
-              <!-- <span id="index_yanwu"  style="display: inline;">1</span> -->
-              <!-- <span id="index_yanwu2" style="display: inline;">2</span>
-              <span id="index_yanwu3" style="display: inline;">3</span> -->
               <span id="index_smog2" data-toggle="counter-up">{{  }}</span>
               <p>烟雾B状态(单位：)</p>
             </div>
@@ -203,8 +187,6 @@
           </div>
 
           <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
-            <!-- <div class="col-xl-6 col-md-3 text-center" data-aos="fade-up"> -->
-              <!-- <div class="col-xl-3 col-md-12 mb-4"></div> -->
               <div class="count-box" >
                 <div align="center"><img  src="./static/assets/img/dp2.png" style="height: 70px;width: 70px;"></img>
                 <span id="index_led" data-toggle="counter-up">{{ index_humid }}</span>
@@ -212,14 +194,26 @@
               </div>
               </div>
                 </a>
-            </div>
+            </div> -->
 
           <div class="col-lg-3 col-md-3 text-center" data-aos="fade-up">
-            <!-- <div class="col-xl-6 col-md-3 text-center" data-aos="fade-up"> -->
-              <!-- <div class="col-xl-3 col-md-12 mb-4"></div> -->
               <div class="count-box" >
                 <div align="center"><img  src="./static/assets/img/icon_hw.png" style="height: 70px;width: 70px;"></img>
                 <span id="index_number" data-toggle="counter-up">{{ index_humid }}</span>
+                <p>人员数量(单位：)</p>
+              </div>
+              </div>
+                </a>
+            </div>
+
+          <div class="col-lg-12 col-md-12 text-center" data-aos="fade-up">
+              <div class="count-box" >
+                <div align="center"><img  src="./static/assets/img/icon_hw_2.png" style="height: 70px;width: 70px;"></img>
+                <span
+                  id="index_people"
+                  data-toggle="counter-up"
+                  style="font-size: 16px;width: auto;"
+                ></span>
                 <p>人员状态(单位：)</p>
               </div>
               </div>
@@ -264,6 +258,14 @@
 	var reconnectFlag = 0;
   var tableList = [];
   var index = false;
+
+  var peopleChangeFlag = -1
+
+  var motor1Str = ''
+  var motor2Str = ''
+  var peopleList = []
+  // var peopleID = ''
+  // var info = ''
   
 
   var options = {
@@ -276,7 +278,7 @@
   client.on('connect', function () {
 		console.log("_connect success!");
 		// client.subscribe('getipd', function (err) {
-		client.subscribe(utils.topicSub, { qos : 0 }, function (err, granted) {
+		client.subscribe([utils.topicSub, utils.topicSub2, utils.topicSub3], { qos : 0 }, function (err, granted) {
 			if (!err) {
 				console.log("_subscribe success!" + new Date());
 				//发布主题getipd,消息内容为Hello mqtt
@@ -293,7 +295,7 @@
             
             console.log("时间是:"+timeStr);
             
-            client.publish(utils.topicOnline,timeStr); 
+            client.publish(utils.topicPub,timeStr); 
           }, 3000);
 
 					reconnectFlag = 1;
@@ -318,13 +320,23 @@
 	})
 
 //   {
-//   "Temp1": 10,
-//   "Humidity1":70,
-//   "Temp2":20,
-//   "Humidity2":80,
-//   "DcmotorA":1,
-//   "DcmotorB":0,
-//   "People":2
+//   "Temp1": 23,
+//   "Temp2": 27,
+//   "Humid1": 40,
+//   "Humid2": 70,
+//   "Smog1": 3278,
+//   "Smog2": 320,
+//   "Light1": 21,
+//   "Light2": 65,
+//   "Motor1": 0,
+//   "Motor2": 2,
+//   "LED": 1,
+//   "PeopleNum": 1,
+//   "ID": 13,
+//   "PeopleInfo": "00001",
+//   "Model":2,
+//   "Temp1Param":25,
+//   "Temp2Param":27
 // }
 
   // topic(str) payload(obj) packet(obj)
@@ -335,48 +347,118 @@
 
     console.log(json_obj);
 
-    var temp1 = json_obj.Temp1;
-    var temp2 = json_obj.Temp2;
-    var humid1 = json_obj.humidity1;
-    var humid2 = json_obj.Humidity2;
-    var light1 = json_obj.Light1;
-    var light2 = json_obj.Light2;
+    var temp1 = json_obj.Temp;
+    // var temp2 = json_obj.Temp2;
+    // var humid1 = json_obj.Humid1;
+    // var humid2 = json_obj.Humid2;
+    // var light1 = json_obj.Light1;
+    // var light2 = json_obj.Light2;
 
     var motor1 = json_obj.Motor1;
     var motor2 = json_obj.Motor2;
-    var smog1 = json_obj.Smog1;
-    var smog2 = json_obj.Smog2;
+    var smog1 = json_obj.Smog;
+    // var smog2 = json_obj.Smog2;
 
     var led = json_obj.LED;
-    var number = json_obj.People;
+    var number = json_obj.PeopleNum;
+    var peopleList = json_obj.Results
 
-      
-    document.getElementById("index_temp1").innerText = temp1;
-    document.getElementById("index_temp2").innerText = temp2;
-    document.getElementById("index_humid1").innerText = humid1;
-    document.getElementById("index_humid2").innerText = humid2;
-    document.getElementById("index_light1").innerText = light1;
-    document.getElementById("index_light2").innerText = light2;
+    // var id = json_obj.ID;
+    // var info = json_obj.PeopleInfo;
 
-    document.getElementById("index_smog1").innerText = smog1;
-    document.getElementById("index_smog2").innerText = smog2;
-    document.getElementById("index_led").innerText = led;
-    document.getElementById("index_number").innerText = number;
+    if (temp1 > 5 && temp1 < 30){
+      document.getElementById("index_temp1").innerText = temp1;
+    }
+    // if (temp2 > 5 && temp2 < 30){
+      // document.getElementById("index_temp2").innerText = temp2;
+    // }
+    // document.getElementById("index_humid1").innerText = humid1;
+    // document.getElementById("index_humid2").innerText = humid2;
+    // document.getElementById("index_light1").innerText = light1;
+    // document.getElementById("index_light2").innerText = light2;
+    if(smog1 > 0){
+      document.getElementById("index_smog1").innerText = smog1;
+    }
+    // document.getElementById("index_smog2").innerText = smog2;
+    // document.getElementById("index_led").innerText = led;
+    if(number >= 0){
+      document.getElementById("index_number").innerText = number;
+      if(peopleChangeFlag != number){
+        client.publish(utils.topicPub, '{"":' + number + '}', {qos : 0})
+      }
+      peopleChangeFlag = number
+    }
+
+    if (number > 0){
+        console.log(peopleList)
+        var str = ''
+        for(var i=0; i<peopleList.length;i++){
+          if(peopleList[i].id != 0){
+            var str1 = '卡号:'+peopleList[i].cardid + ' -> 下井时间:' + peopleList[i].info + ' -> 井中呆留时间:' + getPeopleTime(peopleList[i].info)
+            if(peopleList.length>0){
+              str1 = str1 + ' && '
+            }
+            str = str+ str1
+          }
+        }
+        // str = '下井人数:' + num + ' || ' + str
+        // var str = JSON.stringify(peopleList)
+        console.log(str)
+        document.getElementById("index_people").innerText = str;
+        // document.getElementById("start_time").innerText = time;
+        
+    }else if(number == 0){
+      document.getElementById("index_people").innerText = '不存在';
+    }
 
     if(motor1 == 1){
-      document.getElementById("index_motor1").innerText = "转动";
+      motor1Str = "正转";
     }else if(motor1 == 0){
-      document.getElementById("index_motor1").innerText = "停转";
+      motor1Str = "停转";
+    }else if(motor1 == 2){
+      motor1Str = "反转";
     }
+    document.getElementById("index_motor1").innerText = motor1Str;
 
     if(motor2 == 1){
-      document.getElementById("index_motor2").innerText = "转动";
+      motor2Str= "正转";
     }else if(motor2 == 0){
-      document.getElementById("index_motor2").innerText = "停转";
+      motor2Str = "停转";
+    }else if(motor2 == 2){
+      motor2Str = '反转'
     }
+    document.getElementById("index_motor2").innerText = motor2Str
 
 
   })
+
+  function getPeopleTime(timeStr) {
+    var date1 = new Date(getNowDate())
+    // var date = new Date()
+    // var otherTimeStr = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString() + '-' + date.getHours().toString()
+    // var date2 = new Date(otherTimeStr + ' ' + timeStr);
+    var date2 = new Date(timeStr);
+    // console.log('2021-12-12 ' + timeStr)
+
+    var s1 = date1.getTime(),s2 = date2.getTime();
+    var total = (s1 - s2)/1000;
+
+    console.log(total)
+    if(total > 100){
+      client.publish(utils.topicPub, '{"beep":1}', {qos:0})
+      // alert('下井时间过长！')
+    }
+
+    var day = parseInt(total / (24*60*60));//计算天数
+    var afterDay = total - day*24*60*60;//取得算出天数后剩余的秒数
+    var hour = parseInt(afterDay/(60*60));//计算小时数
+    var afterHour = total - day*24*60*60 - hour*60*60;//取得算出小时数后剩余的秒数
+    var min = parseInt(afterHour/60);//计算整数分
+    var afterMin = total - day*24*60*60 - hour*60*60 - min*60;//取得算出分后剩余的秒数
+
+    resTime = day + '天' + hour + '时' + min + '分' + afterMin + '秒'
+    return resTime
+  }
 
   // setInterval(update2(), 3000);
 
@@ -399,6 +481,17 @@
         if(arg == 0){
           this.value1 = false;
         }
+      },
+      changeTime:function(){
+        var date = new Date();
+        var time = dateFormat("HHMMSS", date);
+        // var time2 = time.replace(/:/g,"");
+        // var time3 = time2.replace(/ /g,"");
+        var timeStr = '{"time":'+time+'}';
+        
+        console.log("时间是:"+timeStr);
+        
+        client.publish(utils.topicPub,timeStr); 
       }
     }
 
@@ -464,6 +557,45 @@
         }
       }
   })
+
+  // if (number > 0){
+  //       var isFlag = 0
+  //       for(var i=0; i<peopleList.length;i++){
+  //         if(id == peopleList[i].id){
+  //           // peopleList[i].id = 0
+  //           peopleList.splice(i, 1)
+  //           isFlag = 1
+  //         }
+  //       }
+  //       if( isFlag == 0 ){
+  //         var peopleObj = {
+  //           id: '',
+  //           info: ''
+  //         }
+  //         peopleObj.id = id
+  //         peopleObj.info = info
+  //         peopleList.push(peopleObj)
+  //       }
+  //       console.log(peopleList)
+  //       var str = ''
+  //       for(var i=0; i<peopleList.length;i++){
+  //         if(peopleList[i].id != 0){
+  //           var str1 = '卡号:'+peopleList[i].id + ' -> 下井时间:' + peopleList[i].info
+  //           if(peopleList.length>0){
+  //             str1 = str1 + ' && '
+  //           }
+  //           str = str+ str1
+  //         }
+  //       }
+  //       // str = '下井人数:' + num + ' || ' + str
+  //       // var str = JSON.stringify(peopleList)
+  //       console.log(str)
+  //       document.getElementById("index_people").innerText = str;
+  //       // document.getElementById("start_time").innerText = time;
+        
+  //   }else{
+  //     document.getElementById("index_people").innerText = '不存在';
+  //   }
 
 </script>
 

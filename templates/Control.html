@@ -116,8 +116,8 @@
 								<form name="myform">
 									<div>温度预警阈值1: &nbsp;&nbsp; <span id="temp1_value"></span></div>
 									<div>温度预警阈值2: &nbsp;&nbsp; <span id="temp2_value"></span></div>
-									<div>光强预警阈值1: &nbsp;&nbsp; <span id="light1_value"></span></div>
-									<div>光强预警阈值2: &nbsp;&nbsp; <span id="light2_value"></span></div>
+									<!-- <div>光强预警阈值1: &nbsp;&nbsp; <span id="light1_value"></span></div>
+									<div>光强预警阈值2: &nbsp;&nbsp; <span id="light2_value"></span></div> -->
 									
 								</br>
 
@@ -134,7 +134,7 @@
 										<button type="button" onclick="changevalue1_2()" class="control-button">确定</button>
 									</div>
 
-									<div>
+									<!-- <div>
 										<input type="text" name="lightmeter2_1" placeholder="光照预警阈值1" class="control-input">
 										&nbsp;↠
 										<button type="button" onclick="changevalue2_1()" class="control-button">确定</button>
@@ -144,7 +144,7 @@
 										<input type="text" name="lightmeter2_2" placeholder="光照预警阈值2" class="control-input">
 										&nbsp;↠
 										<button type="button" onclick="changevalue2_2()" class="control-button">确定</button>
-									</div>
+									</div> -->
 
 									
 								</form>
@@ -165,7 +165,7 @@
 								<div id="control_3">
 								<p> 直流电机A: </p>
 
-								<div id="da" style="display: none;">
+								<div id="da" style="display: none;height: 50px;">
 									<input type="text" id="dcmotora_number" placeholder="直流电机A转速" class="control-input2">
 								</div>
 
@@ -182,8 +182,9 @@
 								<div id="control_4">
 								<p> 直流电机B: </p>
 
-								<div id="db" style="display: none;">
+								<div id="db" style="display: none;height: 50px;">
 									<input type="text" id="dcmotorb_number" placeholder="直流电机B转速" class="control-input2">
+									
 								</div>
 								<!-- <input name ="dcmotorb" type="radio" value='{"DCMOTORB":1}' onclick = "changetype('dcmotorb')"> 正转
 								<input name ="dcmotorb" type="radio" value='{"DCMOTORB":2}' onclick = "changetype('dcmotorb')"> 反转
@@ -199,7 +200,7 @@
 								<div id="control_5">
 								<p> 步进电机: </p>
 
-								<div id="dc" style="display: none;">
+								<div id="dc" style="display: none;height: 50px;">
 								</div>
 
 								<input name ="motor" type="radio" value='{"motor":1}' onclick = "changetype3()"> 转动
@@ -243,10 +244,18 @@
   <script type="text/javascript">
 
 
-    var options = {
+	var options = {
 		clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8)
 	};
 	var client = mqtt.connect(utils.mqttServerUrl, options);
+
+	var checkOptions = {
+		motor: undefined,
+		model: undefined,
+		tempParam: undefined,
+		humidParam: undefined
+	}
+
 
 	var closeFlag = 0;
 	var reconnectFlag = 0;
@@ -292,7 +301,7 @@
 						
 						client.publish(utils.topicOnline,timeStr); 
 					}, 3000);
-
+					
 					reconnectFlag = 1;
 					changeStatus(1);
 					closeFlag = 0;
@@ -335,18 +344,23 @@
 		if(mode == 2){
 			v[0].checked = "true";
 
-			if(changeFlag_1 == 0){
+			if(changeFlag_1 == 1){
 				changediv();
 				changeFlag_1 = 1;
 			}
 
 			var motor = json_obj.Motor;
+			
 			var motor1 = json_obj.Motor1;
+			btn_1_flag = motor1
+			checkOptions.motor1 = motor1
 			var motor2 = json_obj.Motor2;
+			btn_2_flag = motor2
+			checkOptions.motor2 = motor2
 			var led = json_obj.LED;
 
 			if(motor == 0){
-				val1[1].checked == 'true';
+				val1[1].checked = 'true';
 				stop3();
 			}else if(motor == 1){
 				val1[0].checked = 'true';
@@ -358,7 +372,10 @@
 				stop1();
 			}else if(motor1 == 1){
 				val2[0].checked = 'true';
-				// rotate1(400);
+				rotate1(400, 0);
+			}else if(motor1 == 2){
+				val2[2].checked = 'true';
+				rotate1(400, 0);
 			}
 
 			if(motor2 == 0){
@@ -366,7 +383,10 @@
 				stop2();
 			}else if(motor2 == 1){
 				val3[0].checked = 'true';
-				// rotate2(400);
+				rotate2(400, 1);
+			}else if(motor2 == 2){
+				val3[2].checked = 'true';
+				rotate2(400, 0);
 			}
 
 			if(led == 0 || led == 1){
@@ -428,6 +448,7 @@
 		// }
 	};
 
+
 	function stop1(){
 		clearInterval(timer1);
         console.log('定时器已停止');
@@ -485,19 +506,33 @@
 			
 			if(dcmotora_data > 0 && dcmotora_data <= 500){
 				
-				rotate1(parseInt(dcmotora_data));
 				
 				var str = '{"motor1":' + dcmotora_data +'}';
 				
 				client.publish(utils.topicPub,str, {qos:0});
-				console.log('motor1转动: '+ utils.topicPub + str+ new Date());
+				// setTimeout(() => {
+					
+				// 	if(checkOptions.motor == 1){
+				// 		console.log('motor1转动: '+ utils.topicPub + str+ new Date());
+						rotate1(parseInt(dcmotora_data));
+				// 	}else{
+				// 		alert('motor1正转发送失败')
+				// 	}
+				// }, 1000);
+				// console.log('motor1转动: '+ utils.topicPub + str+ new Date());
 			}else{
 				alert("转速输入有误！");
 			}
 		}else if(val[1].checked){
 			client.publish(utils.topicPub, val[1].value, {qos:0});
-			stop1();
-			console.log("motor1停止转动" +val[1].value + new Date()); 
+			// setTimeout(() => {
+			// 	if(checkOptions.motor == 0){
+			// 		stop1();
+			// 		console.log("motor1停止转动" +val[1].value + new Date()); 
+			// 	}else{
+			// 		alert('motor1停转发送失败')
+			// }
+			// },1000)
 		}
 	}
 	
@@ -604,26 +639,45 @@
 		};
 			
 
-    function changediv() {
+  function changediv() {
 		if(document.getElementsByName("amodel")[0].checked) {	//手动模式
 
 			client.publish(utils.topicPub, '{"model":2}', {qos:0});
 			console.log("你启动了" +v[0].value);
 
-			document.getElementById("c1").style.display="block";	//手动
-			document.getElementById("c2").style.display="none";
+			setTimeout(() => {
+				
+				if(checkOptions.model == 2){
+					document.getElementById("c1").style.display="block";	//手动
+					document.getElementById("c2").style.display="none";
+					
+					// val2[1].checked == 'true';
+			// 		// stop1();
+				}else{
+					v[1].checked = "true"
+					alert('手动模式发送失败')
+				}
+			}, 3000);
 			
 		} else if(document.getElementsByName("amodel")[1].checked) {	//自动模式
 
 			client.publish(utils.topicPub, '{"model":1}', {qos:0});
 			console.log("你启动了" +v[1].value);
 
-			document.getElementById("c2").style.display="block";	//自动
-			document.getElementById("c1").style.display="none";
+			setTimeout(() => {
+				if(checkOptions.model == 1){
+					document.getElementById("c2").style.display="block";	//自动
+					document.getElementById("c1").style.display="none";
+				}else{
+					v[0].checked = "true"
+					alert('自动模式发送失败')
+				}
+				
+			}, 3000);
 		}
 	};
 
-    function changetype(args){
+  function changetype(args){
 			var val = document.getElementsByName(args);
 			for(var i=0; i<val.length; i++){
 				if(val[i].checked){

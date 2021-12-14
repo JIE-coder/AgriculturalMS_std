@@ -1,89 +1,148 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta content="width=device-width, initial-scale=1.0" name="viewport">
-		    <script src="../static/assets/js/echarts.min.js"></script>
-		    <script src="../static/assets/js/vue.js"></script>
-		    <script src="../static/assets/js/axios.min.js"></script>
-		    <script src="../static/assets/js/mqtt.min.js"></script>
-		    <script src="../static/assets/js/element-index.js"></script> -->
-		    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script> -->
-		
-		    <link href="../static/assets/css/my.css" rel="stylesheet">
-		    <link href="../static/assets/css/element-index.css" rel="stylesheet">
-		
-		  <title>农业管理系统</title>
-		  <meta content="" name="descriptison">
-		  <meta content="" name="keywords">
-		
-		  <!-- Favicons -->
-		  <link href="../static/assets/img/favicon.png" rel="icon">
-		  <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-		  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
-		  <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		  <link href="../static/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
-		  <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-		  <link href="../static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
-		  <link href="../static/assets/vendor/venobox/venobox.css" rel="stylesheet">
-		  <link href="../static/assets/vendor/aos/aos.css" rel="stylesheet">
-		  <link href="../static/assets/css/style.css" rel="stylesheet">
-	</head>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <script src="../static/assets/js/vue.js"></script>
+  <script src="../static/assets/js/axios.min.js"></script>
+  <script src="../static/assets/js/element-index.js"></script>
+  <script src="../static/assets/js/mqtt.min.js"></script>
+	<script src="./templates/js/utils.js"></script>
+  
+  <script src="./js/utils.js" type="text/javascript" charset="utf-8"></script>
+  <link href="../static/assets/css/my.css" rel="stylesheet">
+  <link href="../static/assets/css/element-index.css" rel="stylesheet">
+
+  <title>管理系统</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="../static/assets/img/favicon.png" rel="icon">
+  <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet"> -->
+  <link href="../static/assets/css/font.css" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="../static/assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="../static/assets/css/style.css" rel="stylesheet">
+
+</head>
 	<body>
 		
 		<!-- ======= Header ======= -->
 		<header id="header">
 		  <div class="container">
-		
 		    <div class="logo float-left">
-		      <h1 class="text-light"><a href="../index.html"><span>农业管理系统
-		
+		      <h1 class="text-light"><a><span>
+		        农业管理系统
 		        <div class="title-status" id="status">
 		          <el-switch v-model="value1" @change="changeStatus" disabled active-text="在线" inactive-text="离线" active-color="#3164c2"></el-switch>
+		          <!-- <el-button type="primary" @click="changeTime" size="mini" plain>时间校准</el-button> -->
 		        </div>
 		
-		      </span></a></h1>
-		      <!-- Uncomment below if you prefer to use an image logo -->
-		      <!-- <a href="temp.html"><img src="static/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+		      </span>
+		        
+		      <!-- </br></br> -->
+		        
+		        </a>
+		      </h1>
+
 		    </div>
-		
-		    <nav class="nav-menu float-right d-none d-lg-block">
-		      <ul>
-		          <li><a href="../index.html">首页<i class="la la-angle-down"></i></a></li>
-		          <li><a href="../templates/Control.html">控制模块</a></li>
-		          <li><a href="../templates/Query.html">查询模块</a></li>
-				  <li><a href="../templates/Statistics.html">查询模块</a></li>
-		          <li class="active"><a href="../templates/Add.html">增加模块</a></li>
-		      </ul>
-		    </nav><!-- .nav-menu -->
-		
-		  </div>
-		</header><!-- End Header -->
-		
-		
-		<section id="team" class="team">
+		        <nav class="nav-menu float-right d-none d-lg-block">
+		          <ul>
+					  
+		            <li><a href="../index.html">首页<i class="la la-angle-down"></i></a></li>
+		            <li><a href="../templates/Control.html">控制模块</a></li>
+		            <!-- <li><a href="../templates/Query.html">查询模块</a></li> -->
+		            <li><a href="../templates/Statistics.html">统计模块</a></li>
+		            <li class="active"><a href="../templates/Add.html">增加模块</a></li>
+		          </ul>
+		        </nav><!-- .nav-menu -->
+		    
+		      </div>
+		    </header><!-- End Header -->
+			
+		 <!-- ======= Our Team Section ======= -->
+		<section id="team" class="contact">
 		  <div class="container">
-		
-		    <div class="section-title">
+		    <div class="section-title section-bg">
+				<br/>
 		      <h2>增加模块</h2>
 		      <p class="section-p">增加车卡信息</p>
 		    </div>
-			<div id="main">
+			<br>
+			<div id="main" class="section-bg">
 				<!-- action 写接口Url -->
-				<form role="form">
-				  <div class="form-group">
-				    <label for="name">卡号</label>
-				    <input type="text" class="form-control" id="name" placeholder="请输入名称">
+				<!-- <form role="form" target="_self" action="http://localhost:8080/data/insertcard1" onsubmit="alert('成功')"> -->
+				<br />
+				<form role="form" onsubmit="return add();" >
+				  <div class="form-group ">
+				    <label for="name" style="color: #5c768d;font-weight: 600;font-size: 20px;">&nbsp;&nbsp;卡号</label>
+				    <input type="text" name="cardid" class="form-control" id="cardid" placeholder="请输入卡号" style="width: 300px; font-size: 16px;">
 				  </div>
 				  <div class="form-group">
-				    <label for="name">所属人</label>
-				    <input type="text" class="form-control" id="name" placeholder="请输入名称">
+				    <label for="name" style="color: #5c768d;font-weight: 600;font-size: 20px;">&nbsp;&nbsp;所属人</label> 
+				    <input type="text" name="username" class="form-control" id="username" placeholder="请输入名称" style="width: 300px; font-size: 16px;">
 				  </div>
-				  <button type="submit" class="btn btn-default">提交</button>
+				  <div style="margin-left: 350px;">
+					   <button type="submit"  class=" control-button2">提交</button>
+				  </div>
+				 <br />
 				</form>
-		    
-		
+		  </div>
+		  <div class="section-bg">
+			  
 		  </div>
 		</section>
-			
+		<a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 	</body>
+
+	<script type="text/javascript">
+
+	function add() {
+		$.ajax({
+			url: utils.serverAddUrl + $("#username").val() 
+			+"&&cardid=" + $("#cardid").val(),
+			// dataType: "json",
+			success: function(res) {
+				console.log(res.code);
+				if(res.code == 10000)
+				alert("成功！")
+				else
+				alert("录入失败")
+			}
+		})
+		return false;
+	}
+	
+	</script>
+	
+	
+	
+	
+	<!-- Vendor JS Files -->
+	<script src="../static/assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="../static/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+	<script src="../static/assets/vendor/php-email-form/validate.js"></script>
+	<script src="../static/assets/vendor/jquery-sticky/jquery.sticky.js"></script>
+	<script src="../static/assets/vendor/venobox/venobox.min.js"></script>
+	<script src="../static/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+	<script src="../static/assets/vendor/counterup/counterup.min.js"></script>
+	<script src="../static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+	<script src="../static/assets/vendor/aos/aos.js"></script>
+	
+	<!-- Template Main JS File -->
+	<script src="../static/assets/js/main.js"></script>
 </html>

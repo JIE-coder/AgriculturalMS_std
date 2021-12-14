@@ -14,7 +14,8 @@
     <script src="../static/assets/js/mqtt.min.js"></script>
 	<!-- <script src="../static/assets/js/jquery-3.6.0.min.js"></script> -->
 	
-	<link href="../static/assets/css/my.css" rel="stylesheet">
+		<script src="./js/utils.js" type="text/javascript" charset="utf-8"></script>
+		<link href="../static/assets/css/my.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/assets/css/element-index.css">
     
 
@@ -73,9 +74,10 @@
       <nav class="nav-menu float-right d-none d-lg-block">
         <ul>
             <li><a href="../index.html">首页<i class="la la-angle-down"></i></a></li>
-            <li class="active"><a href="../templates/Control.html">控制模块</a></li>
+            <li class="active"><a href="../templates/Control_2.html">控制模块</a></li>
             <li><a href="../templates/Query.html">查询模块</a></li>
             <li><a href="../templates/Statistics.html">统计模块</a></li>
+						<li><a href="../templates/Add.html">增加模块</a></li>
         </ul>
       </nav><!-- .nav-menu -->
 
@@ -126,25 +128,21 @@
 								</br>
 
 									<div>
-										<input type="text" name="tempmeter1" placeholder="温度预警阈值1" class="control-input">
-										<!-- <button type="button" onclick="changevalue1()">确定</button> -->
+										<input type="text" name="tempmeter1_1" placeholder="温度预警阈值1" class="control-input">
 										&nbsp;↠
-										<button type="button" onclick="changevalue1()" class="control-button">确定</button>
-										<!-- <el-input type!="textarea" placeholder="请输入内容" v-model="input" size="small" clearable> </el-input> -->
-										<!-- <el-button type="info" size="medium" @click="changevalue1">确认</el-button> -->
+										<button type="button" onclick="changevalue1_1()" class="control-button">确定</button>
 									</div>
 
 									<div>
-										<input type="text" name="tempmeter2" placeholder="温度预警阈值2" class="control-input">
+										<input type="text" name="tempmeter1_2" placeholder="温度预警阈值2" class="control-input">
 										&nbsp;↠
-										<button type="button" onclick="changevalue2()" class="control-button">确定</button>
-										<!-- <el-button type="info" size="medium" @click="changevalue1">确认</el-button> -->
+										<button type="button" onclick="changevalue1_2()" class="control-button">确定</button>
 									</div>
 									
 									<div>
-										<input type="text" name="lightmeter" placeholder="光照预警阈值" class="control-input">
+										<input type="text" name="lightmeter2_1" placeholder="光照预警阈值" class="control-input">
 										&nbsp;↠
-										<button type="button" onclick="changevalue3()" class="control-button">确定</button>
+										<button type="button" onclick="changevalue2_1()" class="control-button">确定</button>
 										<!-- <el-button type="info" size="medium" @click="changevalue1" size="small">确认</el-button> -->
 									</div>
 									
@@ -166,7 +164,7 @@
 				
 							</br></br>
 								<div id="control_3">
-								<p> 直流电机: </p>
+								<p> 直流电机A: </p>
 
 								<!-- <div id="da" style="display: none;">
 									<input type="text" id="dcmotora_number" placeholder="直流电机A转速" class="control-input2">
@@ -175,8 +173,9 @@
 								<!-- <input name ="dcmotora" type="radio" value='{"DCMOTORA":1}' onclick = "changetype('dcmotora')"> 正转 -->
 								<!-- <input name ="dcmotora" type="radio" value='{"DCMOTORA":2}' onclick = "changetype('dcmotora')"> 反转 -->
 								<!-- <input name ="dcmotora" type="radio" value='{"DCMOTORA":3}' onclick = "changetype('dcmotora')" checked> 停转 -->
-								<input name ="dcmotora" type="radio" value='{"motor1":1}' onclick = "changetype1()"> 转动
-								<input name ="dcmotora" type="radio" value='{"motor1":0}' onclick = "changetype1()" checked> 停转
+								<input name ="dcmotora" type="radio" value='{"motor1":1}' onclick = "changetype1()"> 正转
+								<input name ="dcmotora" type="radio" value='{"motor1":0}' onclick = "changetype1()"> 停转
+								<input name ="dcmotora" type="radio" value='{"motor1":2}' onclick = "changetype1()"> 反转
 								&nbsp;
 								<button type="button" onclick="motorBtn1()" class="control-button2">确定</button>
 								</div>
@@ -192,8 +191,9 @@
 								<input name ="dcmotorb" type="radio" value='{"DCMOTORB":2}' onclick = "changetype('dcmotorb')"> 反转
 								<input name ="dcmotorb" type="radio" value='{"DCMOTORB":3}' onclick = "changetype('dcmotorb')" checked> 停转 -->
 
-								<input name ="dcmotorb" type="radio" value='{"motor2":1}' onclick = "changetype2()"> 转动
-								<input name ="dcmotorb" type="radio" value='{"motor2":0}' onclick = "changetype2()" checked> 停转
+								<input name ="dcmotorb" type="radio" value='{"motor2":1}' onclick = "changetype2()"> 正转
+								<input name ="dcmotorb" type="radio" value='{"motor2":0}' onclick = "changetype2()"> 停转
+								<input name ="dcmotorb" type="radio" value='{"motor2":2}' onclick = "changetype2()"> 反转
 								&nbsp;
 								<button type="button" onclick="motorBtn2()" class="control-button2">确定</button>
 								</div>
@@ -259,12 +259,27 @@
 	//浏览器采用websocket协议，host主机地址为192.168.0.200，端口为8083，路径为/mqtt
 	// var client = mqtt.connect("ws://1.117.36.123:8083/mqtt", options); // you add a ws:// url here
 	// var client = mqtt.connect("ws://192.168.43.205:8083/mqtt", options) // you add a ws:// url here
-	var client = mqtt.connect("ws://127.0.0.1:8083/mqtt", options); // you add a ws:// url here
+	var client = mqtt.connect(utils.mqttServerUrl, options); // you add a ws:// url here
 	
+
+	var checkOptions = {
+		motor: undefined,
+		motor1: undefined,
+		motor2: undefined,
+		model: undefined,
+		tempParam: undefined,
+		humidParam: undefined
+	}
 
 	var closeFlag = 0;
 	var reconnectFlag = 0;
 	var modelFlag = 0;
+	var changeFlag_1 = 0;
+	var changeFlag_2 = 0;
+
+	var btn_1_flag = -1;
+	var btn_2_flag = -1;
+	var btn_3_flag = -1;
 
 	var v1 = document.getElementById("c1");
 	var v2 = document.getElementById("c2");
@@ -286,7 +301,7 @@
 	client.on('connect', function () {
 		console.log("_connect success!");
 		// client.subscribe('getipd', function (err) {
-		client.subscribe('projectdata', { qos : 0 }, function (err, granted) {
+		client.subscribe([utils.topicSub,utils.topicSub3], { qos : 0 }, function (err, granted) {
 			if (!err) {
 				console.log("_subscribe success!" + new Date());
 				//发布主题getipd,消息内容为Hello mqtt
@@ -332,46 +347,54 @@
 
 		var mode = json_obj.Model;
 
-// 		{
-// 	"mode":2,
-// 	"dcmotorA": 400,
-// 	"dcmotorB": 0,
-// 	"motor": 300,
-//  "led":1
+// {
+// 	"Model":2,
+// 	"Motor1": 0,
+// 	"Motor2": 1,
+// 	"Temp1Param": 27,
+//  	"Temp2Param":20
 // }
 
 		if(mode == 2){
 			v[0].checked = "true";
 
+			if(changeFlag_1 == 0){
 				changediv();
-
-
-			console.log(document.getElementById("c1").style.display);
-
-			var dcmotorA = json_obj.DcmotorA;
-			var dcmotorB = json_obj.DcmotorB;
-			var motor = json_obj.Motor;
-			var led = json_obj.Led2;
-
-			console.log("dcmotorA:" + dcmotorA);
-			console.log("dcmotorB:" + dcmotorB);
-			console.log("motor:" + motor);
-			console.log("led:" + led);
-
-			if(dcmotorA == 0){
-				val2[1].checked == 'true';
-				stop1();
-			}else if(dcmotorA == 1){
-				val2[0].checked = 'true';
-				rotate1(dcmotorA);
+				changeFlag_1 = 1;
 			}
 
-			if(dcmotorB == 0){
-				val3[1].checked == 'true';
+			var motor1 = json_obj.Motor1;
+			btn_1_flag = getBtnFlag(motor1)
+			checkOptions.motor1 = motor1
+			var motor2 = json_obj.Motor2;
+			btn_2_flag = getBtnFlag(motor2)
+			checkOptions.motor2 = motor2
+
+
+			var motor = json_obj.Motor;
+			var led = json_obj.Led;
+
+
+			if(motor1 == 0){
+				val2[1].checked = 'true';
+				stop1();
+			}else if(motor1 == 1){
+				val2[0].checked = 'true';
+				rotate1(400, 1);
+			}else if(motor1 == 2){
+				val2[2].checked = 'true';
+				rotate1(400, 0);
+			}
+
+			if(motor2 == 0){
+				val3[1].checked = 'true';
 				stop2();
-			}else if(dcmotorB == 1){
+			}else if(motor2 == 1){
 				val3[0].checked = 'true';
-				rotate2(dcmotorB);
+				rotate2(400, 1);
+			}else if(motor2 == 2){
+				val3[2].checked = 'true';
+				rotate2(400, 2);
 			}
 
 			if(motor == 0){
@@ -379,7 +402,10 @@
 				stop3();
 			}else if(motor == 1){
 				val1[0].checked = 'true';
-				rotate3(motor);
+				rotate3(400, 1);
+			}else if(motor == 2){
+				val1[2].checked = 'true';
+				rotate3(400, 2);
 			}
 
 			if(led == 0 || led == 1){
@@ -396,21 +422,46 @@
 		if(mode == 1){
 			v[1].checked = "true";
 
+			if(changeFlag_2 == 0){
 				changediv();
-			var temp1 = json_obj.Temp_parameter1;
-			var temp2 = json_obj.Temp_parameter2;
-			var light = json_obj.Light_parameter;
+				changeFlag_2=1;
+			}
 
-			document.getElementById("temp1_value").innerText = temp1;
-			document.getElementById("temp2_value").innerText = temp2;
-			document.getElementById("light_value").innerText = light;
+			var temp1 = json_obj.TempParam;
+			var temp2 = json_obj.SmogParam;
+			// var temp1 = json_obj.Temp1Param;
+			// var temp2 = json_obj.Temp2Param;
+			// var light = json_obj.LightParam;
+			if(temp1 > 0){
+				console.log(temp1 + 'hhhhh')
+				document.getElementById("temp1_value").innerText = temp1;
+			}
+			if(temp2 > 0){
+
+				document.getElementById("temp2_value").innerText = temp2;
+			}
+			// document.getElementById("light_value").innerText = light;
 		}
 		
 		modelFlag = 1;
 	})
 
+	function getBtnFlag(flag) {
+		switch(flag){
+			case 1:
+				return 0
+				break
+			case 2:
+				return 2
+				break
+			case 0:
+				return 1
+				break
+		}
+	}
 
-	function rotate1(arg_speed1){
+
+	function rotate1(arg_speed1,flag){
 		img1 = document.getElementById("img1");
 		speed1 = arg_speed1;
 		// speed1 = 400;
@@ -420,8 +471,11 @@
 			timer1 = setInterval(() => {
 				r1 = r1 + speed1;
 				console.log(r1);
-
-				img1.style.transform = 'rotate(' + r1 + 'deg)';
+				if(flag == 1){
+					img1.style.transform = 'rotate(' + r1 + 'deg)';
+				}else if(flag == 0){
+					img1.style.transform = 'rotate(-' + r1 + 'deg)';
+				}
 				img1.style.transition = 'all 1s linear';
 				console.log('定时器启动');
 			}, 1000);
@@ -433,10 +487,10 @@
 
 	function stop1(){
 		clearInterval(timer1);
-        console.log('定时器已停止');
+    console.log('定时器1已停止');
 	}
 
-	function rotate2(arg_speed2){
+	function rotate2(arg_speed2, flag){
 		img2 = document.getElementById("img2");
 		speed2 = arg_speed2;
 		// speed2 = 400;
@@ -445,8 +499,11 @@
 		timer2 = setInterval(() => {
 			r2 = r2 + speed2;
 			console.log(r2);
-
-			img2.style.transform = 'rotate(' + r2 + 'deg)';
+			if(flag == 1){
+				img2.style.transform = 'rotate(' + r2 + 'deg)';
+			}else if(flag == 0){
+				img2.style.transform = 'rotate(-' + r2 + 'deg)';
+			}
 			img2.style.transition = 'all 1s linear';
 			console.log('定时器启动');
 		}, 1000);
@@ -455,10 +512,10 @@
 
 	function stop2(){
 		clearInterval(timer2);
-        console.log('定时器已停止');
+        console.log('定时器2已停止');
 	}
 
-	function rotate3(arg_speed3){
+	function rotate3(arg_speed3, flag){
 		img3 = document.getElementById("img3");
 		speed3 = arg_speed3;
 		// speed3 = 400;
@@ -467,8 +524,11 @@
 		timer3 = setInterval(() => {
 			r3 = r3 + speed3;
 			console.log(r3);
-
-			img3.style.transform = 'rotate(' + r3 + 'deg)';
+			if(flag == 1){
+				img3.style.transform = 'rotate(' + r3 + 'deg)';
+			}else if(flag == 0){
+				img3.style.transform = 'rotate(-' + r3 + 'deg)';
+			}
 			img3.style.transition = 'all 1s linear';
 			console.log('定时器启动');
 		}, 1000);
@@ -477,24 +537,52 @@
 
 	function stop3(){
 		clearInterval(timer3);
-        console.log('定时器已停止');
+        console.log('定时器3已停止');
 	}
 
 	function motorBtn1() {
 		var val = document.getElementsByName("dcmotora");
 		if(val[0].checked){
 
-			rotate1(400);
-			
 			var str = '{"motor1":1}';
 			
-			client.publish('getipd',str, {qos:0});
-			console.log('motor1转动: '+'getipd'+str+ new Date());
+			client.publish(utils.topicPub,'{"motor1":1}', {qos:0});
+
+			// setTimeout(() => {
+				
+				// if(checkOptions.motor1 == 1){
+					console.log('motor1转动: '+ utils.topicPub + str+ new Date());
+					// btn_1_flag = 0
+					rotate1(400, 1);
+			// 	}else{
+			// 		val[btn_1_flag].checked =true
+			// 		alert('motor1正转发送失败')
+			// 	}
+			// }, 2000);
 
 		}else if(val[1].checked){
-			client.publish('getipd', val[1].value, {qos:0});
-			stop1();
-			console.log("A:停止转动" +val[1].value + new Date()); 
+			client.publish(utils.topicPub, '{"motor1":0}', {qos:0});
+			// setTimeout(() => {
+			// 	if(checkOptions.motor1 == 0){
+					stop1();
+					console.log("motor1停止转动" +val[1].value + new Date()); 
+					// btn_1_flag = 1
+				// }else{
+					// val[btn_1_flag].checked =true
+					// alert('motor1停转发送失败')
+			// }
+			// },2000)
+		}else if(val[2].checked){
+			client.publish(utils.topicPub, '{"motor1":2}', {qos:0});
+			// setTimeout(() => {
+				// if(checkOptions.motor1 == 2){
+					rotate1(400, 0);
+			// 		btn_1_flag = 2
+			// 	}else{
+			// 		val[btn_1_flag].checked =true
+			// 	alert('motor1反转发送失败')
+			// }
+			// },2000)
 		}
 	}
 	
@@ -502,81 +590,150 @@
 		var val = document.getElementsByName("dcmotorb");
 		if(val[0].checked){
 
-			rotate2(400);
-			
-			var str = '{"motor2":1}';
-			
-			client.publish('getipd',str, {qos:0});
-			console.log('motor2转动: '+'getipd'+str + new Date());
-
+			client.publish(utils.topicPub,'{"motor2":1}', {qos:0});
+			// setTimeout(() => {
+				
+			// 	if(checkOptions.motor2 == 1){
+					console.log('motor2转动: '+ utils.topicPub + str+ new Date());
+					// btn_2_flag = 0
+					rotate2(400, 1);
+				// }else{
+					// val[btn_2_flag].checked =true
+					// alert('motor2正转发送失败')
+				// }
+			// }, 2000);
 
 		}else if(val[1].checked){
-			client.publish('getipd', val[1].value, {qos:0});
-			stop2();
-			console.log("A:停止转动" +val[1].value); 
+			client.publish(utils.topicPub, '{"motor2":0}', {qos:0});
+			// setTimeout(() => {
+			// 	if(checkOptions.motor2 == 0){
+					stop2();
+					// btn_2_flag = 1
+				// }else{
+					// val[btn_2_flag].checked =true
+					// alert('motor2停转发送失败')
+			// }
+			// },2000)
+		}else if(val[2].checked){
+			client.publish(utils.topicPub, '{"motor2":2}', {qos:0});
+			// setTimeout(() => {
+			// 	if(checkOptions.motor2 == 2){
+					rotate2(400, 0);
+					// btn_2_flag = 2
+				// }else{
+					// val[btn_2_flag].checked =true
+					// alert('motor2反转发送失败')
+				// }
+			// },2000)
 		}
 	}
 
 	function motorBtn3() {
 		var val = document.getElementsByName("motor");
 		if(val[0].checked){
+
+			client.publish(utils.topicPub,'{"motor":1}', {qos:0});
+			setTimeout(() => {
 				
-			client.publish('getipd','{"motor":1}');
-			console.log('motor转动+' +'getipd + motor:0 +' + new Date());
+				if(checkOptions.motor == 1){
+					console.log('motor转动: '+ utils.topicPub + str+ new Date());
+					btn_3_flag = 1
+					rotate3(400, 1);
+				}else{
+					val[btn_3_flag].checked =true
+					alert('motor正转发送失败')
+				}
+			}, 1000);
 
 		}else if(val[1].checked){
-			client.publish('getipd', val[1].value, {qos:0});
-			stop3();
-			console.log("A:停止转动" +val[1].value); 
+			client.publish(utils.topicPub, '{"motor":0}', {qos:0});
+			setTimeout(() => {
+				if(checkOptions.motor == 0){
+					stop3();
+					btn_3_flag = 0
+				}else{
+					val[btn_3_flag].checked =true
+					alert('motor停转发送失败')
+			}
+		},1000)
+		}else if(val[2].checked){
+			client.publish(utils.topicPub, '{"motor":2}', {qos:0});
+			setTimeout(() => {
+				if(checkOptions.motor == 2){
+					rotate3(400, 0);
+					btn_3_flag = 2
+				}else{
+					val[btn_3_flag].checked =true
+					alert('motor反转发送失败')
+				}
+			},1000)
 		}
 	}
 	
 
-	function changevalue1() {
-			var aa = myform.tempmeter1.value;
+	function changevalue1_1() {
+			var aa = myform.tempmeter1_1.value;
 			if(aa == a)
 			{
-				console.log("temp1:bubian");
+				console.log("temp1不变");
 			}else {
 				console.log("aa:" + aa + "  a:" + a);
 				
 				if(aa != "") {
-					client.publish('getipd', '{"temp1":' +aa +'}', {qos:0});
-					console.log("你改变了阈值 tempmeter1： " + aa);   
+					client.publish(utils.topicPub, '{"temp1_param":' +aa +'}', {qos:0});
+					console.log("你改变了阈值 tempmeter1： " + aa);
 					a = aa;
 				};
 			}
 		};
-			
-	function changevalue2() {
-			var bb = myform.tempmeter2.value;
-			if(bb == b)
+	function changevalue1_2() {
+			var aa = myform.tempmeter1_2.value;
+			if(aa == a)
 			{
-				console.log("temp2:bubian");
+				console.log("temp2不变");
 			}else {
-				console.log("bb:" + bb + "  b:" + b);
-				if(bb != "") {
-					client.publish('getipd', '{"temp2":' +bb +'}', {qos:0});
-					console.log("你改变了阈值 tempmeter2： " + bb);   
-					b = bb;
+				console.log("aa:" + aa + "  a:" + a);
+				
+				if(aa != "") {
+					client.publish(utils.topicPub, '{"temp2_param":' +aa +'}', {qos:0});
+					console.log("你改变了阈值 tempmeter2： " + aa);   
+					a = aa;
+				};
+			}
+		};
+		
+	function changevalue2_1() {
+			var aa = myform.lightmeter2_1.value;
+			if(aa == a)
+			{
+				console.log("light1不变");
+			}else {
+				console.log("aa:" + aa + "  a:" + a);
+				
+				if(aa != "") {
+					client.publish(utils.topicPub, '{"light1_param":' +aa +'}', {qos:0});
+					console.log("你改变了阈值 light1： " + aa);   
+					a = aa;
 				};
 			}
 		};
 
-	function changevalue3() {
-			var cc = myform.lightmeter.value;
-			if(cc == c)
+	function changevalue2_2() {
+			var aa = myform.lightmeter2_2.value;
+			if(aa == a)
 			{
-				console.log("light:bubian");
+				console.log("light2不变");
 			}else {
-				console.log("cc:" + cc + "  b:" + c);
-				if(cc != "") {
-					client.publish('getipd', '{"light":' +cc +'}', {qos:0});
-					console.log("你改变了阈值 lightmeter： " + cc);   
-					c = cc;
+				console.log("aa:" + aa + "  a:" + a);
+				
+				if(aa != "") {
+					client.publish(utils.topicPub, '{"light2_param":' +aa +'}', {qos:0});
+					console.log("你改变了阈值 light2： " + aa);   
+					a = aa;
 				};
 			}
 		};
+		
 
 
 
@@ -586,7 +743,7 @@
 		if(document.getElementsByName("amodel")[0].checked) {	//手动模式
 
 			
-			client.publish('getipd', v[0].value, {qos:0});
+			client.publish(utils.topicPub, v[0].value, {qos:0});
 			console.log("你启动了" +v[0].value);
 
 			document.getElementById("c1").style.display="block";	//手动
@@ -594,7 +751,7 @@
 			
 		} else if(document.getElementsByName("amodel")[1].checked) {	//自动模式
 
-			client.publish('getipd', v[1].value, {qos:1});
+			client.publish(utils.topicPub, v[1].value, {qos:1});
 			console.log("你启动了" +v[1].value);
 
 			document.getElementById("c2").style.display="block";	//自动
@@ -616,9 +773,9 @@
 		var val = document.getElementsByName("dcmotora");
 		if(val[0].checked ){
 			// document.getElementById("da").style.display = "block";
-			console.log(document.getElementById("da").style.display);
+			// console.log(document.getElementById("da").style.display);
 		}else if(val[1].checked){
-			document.getElementById("da").style.display = "none";
+			// document.getElementById("da").style.display = "none";
 		}
 	};
 
@@ -626,9 +783,9 @@
 		var val = document.getElementsByName("dcmotorb");
 		if(val[0].checked ){
 			// document.getElementById("db").style.display = "block";
-			console.log(document.getElementById("db").style.display);
+			// console.log(document.getElementById("db").style.display);
 		}else if(val[1].checked){
-			document.getElementById("db").style.display = "none";
+			// document.getElementById("db").style.display = "none";
 		}
 	};
 
@@ -689,20 +846,10 @@
 			dengBtn:function(){
 				// console.log(callback);
 				var light = document.getElementById("img4");
-				// if(this.deng == "1"){
-				// 	light.src = "../static/assets/img/dp2.png"
-				// 	client.publish('getipd', '{"LED":1}')
-				// 	console.log("你启动了开关");
-				// }
-				// else {
-				// 	light.src = "../static/assets/img/dp.png";
-				// 	client.publish('getipd', '{"LED":0}');
-				// 	console.log("你关闭了开关");  
-				// }
 				if(this.deng == true){
 					// this.deng = true;
 					light.src = "../static/assets/img/dp2.png";
-					client.publish('getipd', '{"led2":250}', {qos:0}, function (error) {
+					client.publish(utils.topicPub, '{"led2":250}', {qos:0}, function (error) {
 						if (error) {
 							console.log('111发布失败')
 						} else {
@@ -714,7 +861,7 @@
 				else {
 					// this.deng = false;
 					light.src = "../static/assets/img/dp.png";
-					client.publish('getipd', '{"led2":0}', {qos:0}, function (error) {
+					client.publish(utils.topicPub, '{"led2":0}', {qos:0}, function (error) {
 						if (error) {
 							console.log('000发布失败')
 						} else {
